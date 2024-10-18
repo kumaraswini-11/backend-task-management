@@ -4,7 +4,7 @@
   "description": "Build a task management app that allows users to create tasks, assign them to categories, and track their progress. Use Node.js, MongoDB, and user authentication to manage users and their tasks.",
   "main": "index.ts",
   "scripts": {
-    "dev": "nodemon ./src/index.ts",
+    "dev": "node -r ts-node/register --watch --env-file=.env ./src/index.ts",
     "start": "node -r ts-node/register --env-file=.env ./src/index.ts",
     "format": "npx prettier . --write",
     "check": "npx prettier . --check",
@@ -24,7 +24,6 @@
     "@types/node": "^22.7.6",
     "eslint": "^9.12.0",
     "globals": "^15.11.0",
-    "nodemon": "^3.1.7",
     "prettier": "3.3.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.3",
