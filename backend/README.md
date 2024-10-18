@@ -26,3 +26,4 @@ Build a task management app that allows users to create tasks, assign them to ca
 ## Reference
 
 - [TypeStrong/ts-node#2092](https://github.com/TypeStrong/ts-node/issues/2092)
+- [Nodemon Not Required with Node.js --watch](https://nodejs.org/docs/v20.17.0/api/cli.html#--watch)
