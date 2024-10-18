@@ -22,3 +22,7 @@ Build a task management app that allows users to create tasks, assign them to ca
 - git clone `<git-clone-link>`
 - npm i
 - npm run dev
+
+## Reference
+
+- [TypeStrong/ts-node#2092](https://github.com/TypeStrong/ts-node/issues/2092)
