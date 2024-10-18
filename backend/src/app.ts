@@ -1,8 +1,9 @@
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import { _config } from "./config/config";
 import { globalErrorHandler } from "./middlewares/global-error-handler";
-import { rootRoute } from "./routes";
+import rootRouter from "./routes";
 
 const app = express();
 app.use(
@@ -14,12 +15,13 @@ app.use(
 app.use(express.static("public", { maxAge: "1d" }));
 app.use(express.json({ limit: "16kb" }));
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
+app.use(cookieParser());
 
 // Routes
 app.get("/", (_, res, next) => {
   res.json({ message: "Running fine..." });
 });
-app.use("/api", rootRoute);
+app.use("/api", rootRouter);
 
 app.use(globalErrorHandler as any);
 

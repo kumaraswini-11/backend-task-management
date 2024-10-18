@@ -1,10 +1,11 @@
 import mongoose, { Schema, Document, CallbackError } from "mongoose";
 import bcrypt from "bcrypt";
 
-interface IUser extends Document {
+export interface IUser extends Document {
   username: string;
   email: string;
   password: string;
+  refreshToken?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -30,22 +31,22 @@ const userSchema = new Schema<IUser>(
       required: [true, "Password is required"],
       select: false,
     },
+    refreshToken: {
+      type: String,
+      select: false,
+    },
   },
   { timestamps: true }
 );
 
-userSchema.pre("save", async function (next) {
-  const user = this as IUser;
-
-  if (user.isModified("password")) {
-    try {
-      user.password = await bcrypt.hash(user.password, 10);
-    } catch (err) {
-      return next(err as CallbackError);
+userSchema.pre<IUser>(
+  "save",
+  async function (next: (err?: CallbackError) => void) {
+    if (this.isModified("password")) {
+      this.password = await bcrypt.hash(this.password, 12);
     }
+    next();
   }
-
-  next();
-});
+);
 
 export default mongoose.model<IUser>("User", userSchema);
