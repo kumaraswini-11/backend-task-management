@@ -6,13 +6,23 @@ import { _config } from "../config/config";
 import userSchema from "../models/user-schema";
 import { cookieOptions } from "../config/contants";
 
-interface TokenConfig {
-  tokenPayload: object;
+export interface ITokenPayload {
+  userId: string;
+  username: string;
+  email: string;
+}
+
+interface ITokenConfig {
+  tokenPayload: ITokenPayload;
   secret: string;
   expiry: string;
 }
 
-function generateToken({ tokenPayload, secret, expiry }: TokenConfig): string {
+export interface IAuthenticatedRequest extends Request {
+  user?: ITokenPayload;
+}
+
+function generateToken({ tokenPayload, secret, expiry }: ITokenConfig): string {
   return jwt.sign(tokenPayload, secret, {
     expiresIn: expiry,
     // algorithm: "HS256",
@@ -73,16 +83,16 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
     // Generate tokens
     const accessToken = generateToken({
       tokenPayload: {
-        userId: user._id,
-        username: user.username,
-        email: user.email,
+        userId: user?._id as string,
+        username: user?.username,
+        email: user?.email,
       },
       secret: _config.accessTokenSecret as string,
       expiry: _config.accessTokenExpiry as string,
     });
     const refreshToken = generateToken({
       tokenPayload: {
-        userId: user._id,
+        userId: user._id as string,
         username: user.username,
         email: user.email,
       },
@@ -115,11 +125,14 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-const logoutUser = async (req: Request, res: Response, next: NextFunction) => {
+const logoutUser = async (
+  req: IAuthenticatedRequest,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
     const userUpdateResult = await userSchema.updateOne(
-      // @ts-ignore
-      { _id: req.user?._id },
+      { _id: req.user?.userId }, // We can do @ts-ignor or (req as any).user?.userId or IAuthenticatedRequest
       { $unset: { refreshToken: 1 } } // Remove the refreshToken field
     );
 
@@ -129,7 +142,9 @@ const logoutUser = async (req: Request, res: Response, next: NextFunction) => {
       .status(200)
       .json({ message: "Logout successful." });
   } catch (err) {
-    next(err);
+    return next(
+      createHttpError(500, "An unknown error occurred while logout.")
+    );
   }
 };
 
