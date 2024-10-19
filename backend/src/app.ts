@@ -19,7 +19,7 @@ app.use(cookieParser());
 
 // Routes
 app.get("/", (_, res, next) => {
-  res.json({ message: "Running fine..." });
+  res.json({ message: "Server is running smoothly!" });
 });
 app.use("/api", rootRouter);
 

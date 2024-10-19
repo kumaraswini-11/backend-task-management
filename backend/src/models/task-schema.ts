@@ -1,9 +1,10 @@
 import mongoose, { Schema, Document } from "mongoose";
+import { TaskStatus } from "../config/contants";
 
 interface ITask extends Document {
   title: string;
   description?: string;
-  status: "pending" | "in-progress" | "completed";
+  status: TaskStatus;
   dueDate?: Date;
   categoryId?: mongoose.Schema.Types.ObjectId;
   userId: mongoose.Schema.Types.ObjectId;
@@ -13,12 +14,12 @@ interface ITask extends Document {
 
 const taskSchema = new Schema<ITask>(
   {
-    title: { type: String, required: true },
+    title: { type: String, required: [true, "Title is required"] },
     description: { type: String },
     status: {
       type: String,
-      enum: ["pending", "in-progress", "completed"],
-      default: "pending",
+      enum: Object.values(TaskStatus),
+      default: TaskStatus.PENDING,
       index: true,
     },
     dueDate: { type: Date },
