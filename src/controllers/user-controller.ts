@@ -30,9 +30,9 @@ function generateToken({ tokenPayload, secret, expiry }: ITokenConfig): string {
 }
 
 const signupUser = async (req: Request, res: Response, next: NextFunction) => {
-  const { username, email, password } = req.body;
+  const { name: username, email, password } = req.body;
 
-  if ([username, email, password].some((field) => field == null)) {
+  if ([username, email, password].some((field) => field == "")) {
     return next(createHttpError(400, "All fields are required!"));
   }
 
@@ -44,11 +44,10 @@ const signupUser = async (req: Request, res: Response, next: NextFunction) => {
       );
     }
 
-    const hashedPassword = await bcrypt.hash(password, 12);
     const newUser = await userSchema.create({
       username,
       email,
-      password: hashedPassword,
+      password,
     });
 
     return res.status(201).json({

@@ -1,5 +1,6 @@
 import mongoose, { Schema, Document, CallbackError } from "mongoose";
 import bcrypt from "bcrypt";
+import { SALT_ROUNDS } from "../config/contants";
 
 export interface IUser extends Document {
   username: string;
@@ -43,7 +44,7 @@ userSchema.pre<IUser>(
   "save",
   async function (next: (err?: CallbackError) => void) {
     if (this.isModified("password")) {
-      this.password = await bcrypt.hash(this.password, 12);
+      this.password = await bcrypt.hash(this.password, SALT_ROUNDS);
     }
     next();
   }
