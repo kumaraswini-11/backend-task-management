@@ -1,4 +1,4 @@
-import { _config } from "./config";
+// import { _config } from "./config";
 
 export const DEFAULT_PAGE = 1;
 export const DEFAULT_LIMIT = 10;
@@ -8,7 +8,7 @@ export const SALT_ROUNDS = 10;
 export const cookieOptions = {
   httpOnly: true,
   secure: true,
-  sameSite: _config.nodeEnv === "production" ? "None" : "None", // None for cross-site cookies, Lax for local
+  sameSite: "None",
 };
 
 export enum TaskStatus {
