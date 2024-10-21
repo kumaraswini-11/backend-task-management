@@ -34,3 +34,4 @@ Build a task management app that allows users to create tasks, assign them to ca
 - **SameSite Cookies Explained**
   - [Link 1](https://web.dev/articles/samesite-cookies-explained)
   - [Link 2](https://andrewlock.net/understanding-samesite-cookies/)
+- [Express Header Remove](https://stackoverflow.com/questions/10717685/how-to-remove-x-powered-by-in-expressjs)

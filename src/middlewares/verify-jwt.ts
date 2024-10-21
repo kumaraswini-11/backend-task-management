@@ -13,6 +13,7 @@ export const verifyJwt = async (
   const token =
     req.cookies?.accessToken ||
     req.header("Authorization")?.replace("Bearer ", "");
+
   if (!token) {
     return next(
       createHttpError(401, "Access token is missing. Unauthorized request.")

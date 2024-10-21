@@ -1,12 +1,13 @@
 import mongoose, { Schema, Document } from "mongoose";
 import { TaskStatus } from "../config/contants";
+import { ICategory } from "./category-schema";
 
 interface ITask extends Document {
   title: string;
   description?: string;
   status: TaskStatus;
   dueDate?: Date;
-  categoryId?: mongoose.Schema.Types.ObjectId;
+  categoryId?: ICategory | mongoose.Schema.Types.ObjectId;
   userId: mongoose.Schema.Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;

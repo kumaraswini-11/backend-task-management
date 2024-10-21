@@ -6,6 +6,7 @@ import { globalErrorHandler } from "./middlewares/global-error-handler";
 import rootRouter from "./routes";
 
 const app = express();
+app.disable("x-powered-by");
 app.use(
   cors({
     origin: _config.frontendDomain,

@@ -68,14 +68,39 @@ const getTasks = async (req: Request, res: Response, next: NextFunction) => {
       .skip((parsedPage - 1) * parsedLimit)
       .limit(parsedLimit)
       .sort({ createdAt: -1 })
-      .populate("category");
+      .populate("categoryId", "name");
+
+    const formattedTasks = tasks.map(
+      ({
+        _id,
+        title,
+        description,
+        status,
+        dueDate,
+        userId,
+        createdAt,
+        updatedAt,
+        categoryId,
+      }) => ({
+        _id,
+        title,
+        description,
+        status,
+        dueDate,
+        // @ts-ignore
+        category: categoryId?.name,
+        userId,
+        createdAt,
+        updatedAt,
+      })
+    );
 
     return res.status(200).json({
       message: "Tasks retrieved successfully.",
       currentPage: parsedPage,
       totalPages,
       totalCount,
-      tasks,
+      tasks: formattedTasks,
     });
   } catch (error) {
     return next(
