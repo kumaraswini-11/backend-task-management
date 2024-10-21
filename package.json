@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Build a task management app that allows users to create tasks, assign them to categories, and track their progress. Use Node.js, MongoDB, and user authentication to manage users and their tasks.",
   "main": "index.ts",
+  "type": "module",
   "scripts": {
     "dev": "node -r ts-node/register --watch --env-file=.env ./src/index.ts",
     "start": "node -r ts-node/register --env-file=.env ./src/index.ts",
